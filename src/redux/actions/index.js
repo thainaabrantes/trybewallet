@@ -1,26 +1,39 @@
-import { USER, CURRENCIES } from './actionTypes';
-import fetchCurrencies from '../../services/walletApi';
+import { USER, ERROR, GET_CURRENCIES, SAVE_EXPENSE } from './actionTypes';
+import fetchApi from '../../services/walletApi';
 
-const saveUser = (email) => ({
-  type: USER,
-  payload: email,
+const receiveError = (errorMessage) => ({
+  type: ERROR,
+  payload: errorMessage,
 });
 
 export const loginUser = (email) => async (dispatch) => {
-  dispatch(saveUser(email));
+  dispatch({
+    type: USER,
+    payload: email,
+  });
 };
 
 export const getCurrencies = () => async (dispatch) => {
   try {
-    const response = await fetchCurrencies();
-    const currencies = Object.keys(response);
+    const currencies = Object.keys(await fetchApi());
     currencies.splice(currencies.indexOf('USDT'), 1);
 
     dispatch({
-      type: CURRENCIES,
+      type: GET_CURRENCIES,
       payload: currencies,
     });
   } catch (error) {
-    dispatch();
+    dispatch(receiveError(error));
+  }
+};
+
+export const saveExpense = (expense) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SAVE_EXPENSE,
+      payload: expense,
+    });
+  } catch (error) {
+    dispatch(receiveError(error));
   }
 };
