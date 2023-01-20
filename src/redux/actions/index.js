@@ -1,4 +1,6 @@
-import { USER, ERROR, GET_CURRENCIES, SAVE_EXPENSE } from './actionTypes';
+import {
+  USER, ERROR, GET_CURRENCIES, SAVE_EXPENSE, DELETE_EXPENSE,
+} from './actionTypes';
 import fetchApi from '../../services/walletApi';
 
 const receiveError = (errorMessage) => ({
@@ -36,4 +38,11 @@ export const saveExpense = (expense) => async (dispatch) => {
   } catch (error) {
     dispatch(receiveError(error));
   }
+};
+
+export const deleteExpense = (expenses) => async (dispatch) => {
+  dispatch({
+    type: DELETE_EXPENSE,
+    payload: expenses,
+  });
 };
