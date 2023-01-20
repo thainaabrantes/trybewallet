@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { email, expenses } = this.props;
-    console.log(`expensesValues: ${Object.values(expenses)}`);
-    console.log(`chaves das expenses: ${Object.keys(expenses)}`);
 
     const sum = Object.values(expenses)
       .reduce((acc, currExpense) => acc
