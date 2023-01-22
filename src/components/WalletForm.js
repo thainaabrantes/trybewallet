@@ -19,8 +19,8 @@ class WalletForm extends Component {
     dispatch(getCurrencies());
   }
 
-// Teste para adicionar os valores nos inputs ao clicar em editar despesa.
-// Ainda não funciona pq está entrando em loop.
+  // Teste para adicionar os valores nos inputs ao clicar em editar despesa.
+  // Ainda não funciona pq está entrando em loop.
   // componentDidUpdate(editing) {
   //   if (editing) {
   //     const { expenseToEdit } = this.props;
