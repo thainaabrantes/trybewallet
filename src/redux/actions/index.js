@@ -1,5 +1,5 @@
 import {
-  USER, ERROR, GET_CURRENCIES, SAVE_EXPENSE, DELETE_EXPENSE,
+  USER, ERROR, GET_CURRENCIES, SAVE_EXPENSE, DELETE_EXPENSE, SEND_EXPENSE_TO_EDIT, EDIT_EXPENSE,
 } from './actionTypes';
 import fetchApi from '../../services/walletApi';
 
@@ -44,5 +44,19 @@ export const deleteExpense = (expenses) => async (dispatch) => {
   dispatch({
     type: DELETE_EXPENSE,
     payload: expenses,
+  });
+};
+
+export const sendExpenseToEdit = (expenseToEdit) => async (dispatch) => {
+  dispatch({
+    type: SEND_EXPENSE_TO_EDIT,
+    payload: expenseToEdit,
+  });
+};
+
+export const editExpense = (expenseInfo) => async (dispatch) => {
+  dispatch({
+    type: EDIT_EXPENSE,
+    payload: expenseInfo,
   });
 };
