@@ -1,5 +1,11 @@
 import {
-  USER, ERROR, GET_CURRENCIES, SAVE_EXPENSE, DELETE_EXPENSE, SEND_EXPENSE_TO_EDIT, EDIT_EXPENSE,
+  USER,
+  ERROR,
+  GET_CURRENCIES,
+  SAVE_EXPENSE,
+  DELETE_EXPENSE,
+  SEND_EXPENSE_TO_EDIT,
+  EDIT_EXPENSE,
 } from './actionTypes';
 import fetchApi from '../../services/walletApi';
 

@@ -19,8 +19,8 @@ class WalletForm extends Component {
     dispatch(getCurrencies());
   }
 
-/**Teste para adicionar os valores nos inputs ao clicar em editar despesa.
-Ainda não funciona pq está entrando em loop. */
+// Teste para adicionar os valores nos inputs ao clicar em editar despesa.
+// Ainda não funciona pq está entrando em loop.
   // componentDidUpdate(editing) {
   //   if (editing) {
   //     const { expenseToEdit } = this.props;
@@ -159,14 +159,14 @@ Ainda não funciona pq está entrando em loop. */
 WalletForm.propTypes = {
   currencies: PropTypes.instanceOf(Array).isRequired,
   editing: PropTypes.bool.isRequired,
-  expenseToEdit: PropTypes.instanceOf(Object).isRequired,
+  // expenseToEdit: PropTypes.instanceOf(Object).isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   editing: state.wallet.editing,
-  expenseToEdit: state.wallet.expenseToEdit,
+  // expenseToEdit: state.wallet.expenseToEdit,
 });
 
 export default connect(mapStateToProps)(WalletForm);
