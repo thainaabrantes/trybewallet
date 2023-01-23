@@ -76,4 +76,19 @@ describe('Página Wallet', () => {
     expect(screen.getByRole('textbox', { name: /descrição:/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /adicionar despesa/i })).toBeInTheDocument();
   });
+
+  it('Testa se a página contem a tabela', () => {
+    renderWithRedux(<Wallet />);
+
+    expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /descrição/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /tag/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /método de pagamento/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Valor' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Moeda' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /câmbio utilizado/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /valor convertido/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /moeda de conversão/i })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: /editar\/excluir/i })).toBeInTheDocument();
+  });
 });
