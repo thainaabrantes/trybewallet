@@ -1,6 +1,7 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import { renderWithRedux, renderWithRouterAndRedux } from './helpers/renderWith';
 import App from '../App';
 import Wallet from '../pages/Wallet';
@@ -39,9 +40,14 @@ describe('Tela de Login', () => {
 });
 
 describe('Página Wallet', () => {
-  jest.spyOn(global, 'fetch');
-  global.fetch.mockResolvedValue(mockData)({
-    json: jest.fn().mockResolvedValue(mockData),
+  beforeEach(() => {
+    global.fetch = jest.fn().mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockData),
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('Deve haver um Header na página, contendo o email, valor inicial de 0 e BRL', () => {
@@ -90,5 +96,25 @@ describe('Página Wallet', () => {
     expect(screen.getByRole('columnheader', { name: /valor convertido/i })).toBeInTheDocument();
     expect(screen.getByRole('columnheader', { name: /moeda de conversão/i })).toBeInTheDocument();
     expect(screen.getByRole('columnheader', { name: /editar\/excluir/i })).toBeInTheDocument();
+  });
+
+  it('Testa se ao clicar no botão adicioanr despesa, uma nova despesa é adicionada', async () => {
+    renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'] });
+
+    const valueInput = screen.getByRole('spinbutton', { name: /valor:/i });
+    const descriptionInput = screen.getByRole('textbox', { name: /descrição:/i });
+    const addExpenseButton = screen.getByRole('button', { name: /adicionar despesa/i });
+
+    act(() => {
+      userEvent.type(valueInput, '10');
+      userEvent.type(descriptionInput, 'Descrição da despesa');
+      userEvent.click(addExpenseButton);
+    });
+
+    waitFor(async () => {
+      expect(screen.getByRole('cell', { name: /descrição da despesa/i })).toBeInTheDocument();
+    });
+
+    expect(global.fetch).toBeCalled();
   });
 });
