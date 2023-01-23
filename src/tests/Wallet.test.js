@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithRouterAndRedux } from './helpers/renderWith';
+import { renderWithRedux, renderWithRouterAndRedux } from './helpers/renderWith';
 import App from '../App';
 import Wallet from '../pages/Wallet';
 import mockData from './helpers/mockData';
@@ -39,6 +39,11 @@ describe('Tela de Login', () => {
 });
 
 describe('Página Wallet', () => {
+  jest.spyOn(global, 'fetch');
+  global.fetch.mockResolvedValue(mockData)({
+    json: jest.fn().mockResolvedValue(mockData),
+  });
+
   it('Deve haver um Header na página, contendo o email, valor inicial de 0 e BRL', () => {
     renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'] });
 
@@ -49,12 +54,6 @@ describe('Página Wallet', () => {
     expect(userEmail && initialValue && BRL).toBeInTheDocument();
   });
 
-  it('Deve haver um botão adicionar despesa', () => {
-    renderWithRouterAndRedux(<Wallet />, { initialEntries: ['/carteira'] });
-    const button = screen.getByRole('button', { name: /adicionar despesa/i });
-    expect(button).toBeInTheDocument();
-  });
-
   it('A tabela deve ter um campo Descrição', () => {
     renderWithRouterAndRedux(<Wallet />, { initialEntries: ['/carteira'] });
     const descriptionTitle = screen.getByRole('columnheader', { name: /descrição/i });
@@ -62,13 +61,19 @@ describe('Página Wallet', () => {
   });
 
   it('A API deve ser chamada', () => {
-    jest.spyOn(global, 'fetch');
-    global.fetch.mockResolvedValue(mockData)({
-      json: jest.fn().mockResolvedValue(mockData),
-    });
-    renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'] });
+    renderWithRedux(<Wallet />);
 
-    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://economia.awesomeapi.com.br/json/all');
+  });
+
+  it('Testa os inputs do formulário', () => {
+    renderWithRedux(<Wallet />);
+    expect(screen.getByRole('spinbutton', { name: /valor:/i })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: /moeda:/i })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: /método de pagamento:/i })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: /categoria:/i })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /descrição:/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /adicionar despesa/i })).toBeInTheDocument();
   });
 });
